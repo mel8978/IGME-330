@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #greeting {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <button>Click me</button>
+    <input type="text" id="name_input">
+    <h1 id="greeting">Enter name and click button</h1>
+
+    <script>
+        const button = document.querySelector('button');
+        const input = document.querySelector('#name_input');
+        const greeting = document.querySelector('#greeting');
+
+        button.addEventListener('click', () => {
+            // Capitalize and set name input into greeting heading
+            let name = input.value.trim();
+            if (name.length == 0) {
+                greeting.textContent = 'Enter name and click button';
+            }
+            else {
+                name = name[0].toUpperCase() + name.slice(1);
+                greeting.textContent = 'Hello, ' + name + '!';
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>
