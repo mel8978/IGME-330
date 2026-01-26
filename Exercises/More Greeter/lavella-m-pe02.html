@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Greeter</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
+
+        * {
+            font-family: 'Turret Road';
+
+        }
+
+        #container {
+            display: flex;
+        }
+
+        #greeting {
+            font-weight: bold;
+        }
+
+        button {
+            height: 50px;
+            width: 150px;
+            font-size: 14pt;
+            margin: 3px;
+        }
+
+        #shoutify {
+            height: 15px;
+            width: 20px;
+            margin: 17px 5px 5px 5px;
+        }
+
+
+        input {
+            height: 40px;
+            width: 500px;
+            font-size: 30pt;
+        }
+
+        hr {
+            margin: 20px 0;
+        }
+
+        @media screen and (min-width: 1024px) {
+            body {
+                background-color: red;
+                padding: 100px;
+            }
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            const hello_button = document.querySelector('#btn-hello');
+            const goodbye_button = document.querySelector('#btn-goodbye');
+            const first_input = document.querySelector('#name_input');
+            const last_input = document.querySelector('#last_name_input');
+            const output = document.querySelector('#greeting');
+            const shout = document.querySelector('#shoutify');
+
+            output.style.color = 'red';
+            output.style.backgroundColor = 'yellow';
+
+            const greet = (first, last, greeting) => {
+                //Set's first and last name of greeting to user input
+                //Replaces name with 'peter parker' if empty
+                let first_name = first;
+                let last_name = last;
+
+                if (first_name.length == 0) {
+                    first_name = "Peter";
+                }
+                if (last_name.length == 0) {
+                    last_name = "Parker";
+                }
+
+
+                first_name = first_name[0].toUpperCase() + first_name.slice(1);
+                last_name = last_name[0].toUpperCase() + last_name.slice(1);
+
+                if (shout.checked) {
+                    first_name = first_name.toUpperCase();
+                    last_name = last_name.toUpperCase();
+                    switch (greeting) {
+                        case 'hello':
+                            output.textContent = `HELLO ${first_name} ${last_name}`;
+                            break;
+                        case 'goodbye':
+                            output.textContent = `GOODBYE ${first_name} ${last_name}`;
+                            break;
+                    }
+                }
+                else {
+                    switch (greeting) {
+                        case 'hello':
+                            output.textContent = `Hello ${first_name} ${last_name}`;
+                            break;
+                        case 'goodbye':
+                            output.textContent = `Goodbye ${first_name} ${last_name}`;
+                            break;
+                    }
+                }
+
+            }
+
+            hello_button.addEventListener('click', () => {
+                greet(first_input.value.trim(), last_input.value.trim(), 'hello');
+            });
+            goodbye_button.addEventListener('click', () => {
+                greet(first_input.value.trim(), last_input.value.trim(), 'goodbye');
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <button id="btn-hello">Say Hello</button>
+        <button id="btn-goodbye">Say Goodbye</button>
+        <input type="checkbox" id="shoutify">
+        <p>Shoutify!</p>
+    </div>
+    <hr>
+    <input type="text" id="name_input" placeholder="Peter">
+    <br>
+    <input type="text" id="last_name_input" placeholder="Parker">
+    <h1 id="greeting">Enter name and click button</h1>
+</body>
+
+</html>
