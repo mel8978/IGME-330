@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Basics Demo</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>
+        const canvas = document.querySelector('#canvas');
+        const ctx = canvas.getContext('2d');
+
+
+
+        // debugger;
+
+
+        const drawRect = (origin, width, height) => {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(origin[0], origin[1], width, height);
+
+            ctx.strokeStyle = 'black';
+            ctx.strokeRect(origin[0], origin[1], width, height);
+        }
+
+        const circle = (center, radius) => {
+            ctx.beginPath();
+            ctx.arc(center[0], center[1], radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'orange';
+            ctx.strokeStyle = 'green';
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        drawRect([0, 0], 200, 200);
+        circle([100, 100], 50);
+
+        ctx.beginPath();
+        ctx.moveTo(300, 100);
+        ctx.lineTo(500, 200);
+        ctx.lineTo(500, 400);
+        ctx.closePath();
+
+        ctx.moveTo(300, 200);
+        ctx.lineTo(300, 300);
+        ctx.lineTo(100, 400);
+        ctx.closePath();
+        
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+        ctx.closePath();
+    </script>
+</body>
+
+</html>
