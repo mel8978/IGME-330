@@ -32,10 +32,18 @@
 			
 			// D - fill a rectangle with the current fill color
 			ctx.fillRect(20,20,600,440); 
+			ctx.strokeRect(20,20,600, 440);
 
             ctx.fillStyle = "#0000FF";
 
             ctx.fillRect(120, 120, 400, 300);
+			ctx.strokeRect(120, 120, 400, 300);
+
+			ctx.fillStyle = "rgb(0, 255, 0)";
+			ctx.fillRect(60,60, 200, 150);
+			ctx.lineWidth = 15;
+			ctx.strokeRect(60,60,200,150);
+			
 		}
 	</script>
 </head>

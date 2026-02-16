@@ -1,11 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <!-- ## II. Demo
+    - Build on the "done" code from last time
+    - create a rectangle path the hard way - with `ctx.rect()`
+    - fill and stroke it
+    - create line paths and stroke them
+    - create a circle path with `ctx.arc()`
+    - fill and stroke
+    - create a semi-circle with `ctx.arc()`
+    ## III. Check it Off!
+    - Easy!:
+    - Add 2 more circles to **cs-canvas-2.html**, make them small "eyes" near the center of the screen
+    - Add 1 line to **cs-canvas-2.html**, make it 600 pixels long and give it a width of 20 pixels
+    - Rename **cs-canvas-2.html** to ***lastName-firstInitial*-cs-canvas-2.html**
+    - Put _this file_ into the folder with _the file from the previous unit_. You'll then name the folder as requested
+    (see assigment info), ZIP, and POST to the myCourses Assignment Dropbox. -->
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const width = 640;
+        const height = 480;
+
+        const drawRect = (ctx, { x, y, w, h, color }) => {
+            ctx.save();
+            ctx.beginPath();
+
+            ctx.fillStyle = color;
+            ctx.rect(x, y, w, h);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+        const drawCircle = (ctx, { x, y, r, startAngle, endAngle, counterClockwise, color }) => {
+            ctx.save();
+            ctx.beginPath();
+
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, startAngle, endAngle, counterClockwise);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
+        }
+
+        drawRect(ctx, {
+            x: 100,
+            y: 100,
+            w: 225,
+            h: 225,
+            color: "blue"
+        });
+
+        drawCircle(ctx, {
+            x: 400,
+            y: 300,
+            r: 100,
+            startAngle: 0,
+            endAngle: 2 * Math.PI,
+            counterClockwise: false,
+            color: "rgb(123,123,123)"
+        });
+        drawCircle(ctx, {
+            x: 100,
+            y: 400,
+            r: 50,
+            startAngle: 0,
+            endAngle: Math.PI,
+            counterClockwise: true,
+            color: "rgb(123,123,123)"
+        });
+
+
+        ctx.beginPath();
+        ctx.lineWidth = 4;
+        ctx.moveTo(300, 100);
+        ctx.lineTo(500, 200);
+        ctx.closePath();
+
+        ctx.moveTo(700, 200);
+        ctx.lineTo(500, 300);
+        ctx.closePath();
+
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+    </script>
 </body>
+
 </html>
