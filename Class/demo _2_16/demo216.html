@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const width = 640;
+        const height = 480;
+
+        const drawRect = (ctx, {x, y, w, h, color}) => {
+            ctx.save();
+            ctx.beginPath();
+
+            ctx.fillStyle = color;
+            ctx.rect(x, y, w, h);
+            ctx.rect(x*2.5,y*2.5,w*1.5,h*1.5);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+        const drawSquare = (ctx, {x, y, w, color}) => {
+            ctx.save();
+            drawRect(ctx, {
+                x: x,
+                y: y,
+                w: w,
+                h: w,
+                color: color
+            });
+            ctx.restore();
+        }
+        drawSquare(
+            ctx,
+            {
+                x: 10, 
+                y: 10, 
+                w: 100, 
+                color: "red"
+            }
+        );
+
+        ctx.fillRect(24,24,87,87);
+        let lastTs = 0;
+        const frame = (ts) => {
+            const deltaT = ts - lastTs;
+            console.log(deltaT);
+            
+            lastTs = ts;
+            requestAnimationFrame(frame);
+        }
+        // frame();
+    </script>
+</body>
+
+</html>
