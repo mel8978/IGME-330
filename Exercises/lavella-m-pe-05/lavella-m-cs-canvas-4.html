@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = 640;
+        const height = 480;
+        canvas.width = width;
+        canvas.height = height;
+        // handy helper functions!
+        function getRandomColor() {
+            function getByte() {
+                return 55 + Math.round(Math.random() * 200);
+            }
+            return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",0.8)";
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        const drawRandomRect = () => {
+            let x = getRandomInt(0, width);
+            let y = getRandomInt(0, height);
+            let w = getRandomInt(0, width / 2);
+            let h = getRandomInt(0, height / 2);
+            
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = getRandomColor();
+            ctx.fillStyle = getRandomColor();
+            ctx.fillRect(x, y, w, h);
+            ctx.strokeRect(x, y, w, h);
+            ctx.closePath();
+            ctx.restore();
+        }
+
+        const drawRandomLine = () => {
+            let x = getRandomInt(0, width);
+            let y = getRandomInt(0, height);
+            let w = getRandomInt(0, width / 2);
+            let h = getRandomInt(0, height / 2);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = getRandomColor();
+            ctx.moveTo(x,y);
+            ctx.lineTo(x+width, y+height);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
+        }
+
+        let lastTs = 0;
+        const frame = (ts) => {
+            const deltaT = ts - lastTs;
+            console.log(deltaT);
+
+            drawRandomRect();
+            drawRandomLine();
+            lastTs = ts;
+            requestAnimationFrame(frame);
+        }
+        frame();
+        
+    </script>
+</body>
+
+</html>
