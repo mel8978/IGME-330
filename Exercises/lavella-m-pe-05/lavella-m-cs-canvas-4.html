@@ -9,48 +9,133 @@
         canvas {
             border: 1px solid gray;
         }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        button {
+            font-size: 1.2em;
+        }
+
+        section {
+            margin: .5em 0 .5em 0;
+        }
     </style>
 </head>
 
 <body>
     <canvas></canvas>
+    <section>
+        <button id="btnPlay">Play</button>
+        <button id="btnPause">Pause</button>
+    </section>
+    <section>
+        <span>
+            <input type="checkbox" id="cbRectangles" checked>
+            <label for="cbRectangles">Rectangles</label>
+        </span>
+    </section>
+    <section>
+        <p>Click on the screen to "spraypaint" rectangles (you probably want the screensaver to be paused)</p>
+    </section>
 
     <script>
-        const canvas = document.querySelector('canvas');
-        const ctx = canvas.getContext('2d');
-        const width = 640;
-        const height = 480;
-        canvas.width = width;
-        canvas.height = height;
-        // handy helper functions!
+        'use strict';
+        let ctx;
+        let canvas;
+        let btnPlay;
+        let btnPause;
+        let checkbox;
+        let width;
+        let height;
+        let paused = false;
+        let createRectangles = true;
+
+        const init = () => {
+            canvas = document.querySelector('canvas');
+            btnPlay = document.querySelector('#btnPlay');
+            btnPause = document.querySelector('#btnPause');
+            checkbox = document.querySelector('#cbRectangles');
+            ctx = canvas.getContext('2d');
+            width = 640;
+            height = 480;
+            canvas.width = width;
+            canvas.height = height;
+            setupUI();
+            update();
+        }
+
+        const update = () => {
+            if (paused) return;
+            requestAnimationFrame(update);
+            if (createRectangles) {
+                drawRandomRect(ctx);
+                drawRandomLine(ctx);
+            }
+        }
+
+        const setupUI = () => {
+            btnPause.onclick = () => {
+                paused = true;
+                console.log("paused");
+            }
+            btnPlay.onclick = () => {
+                if (!paused) return;
+                paused = false;
+                console.log("unpaused");
+                update();
+            }
+            checkbox.onclick = (e) => {
+                createRectangles = e.target.checked;
+            }
+            canvas.onclick = canvasClicked;
+        }
+
+        // handy utility functions!
         function getRandomColor() {
             function getByte() {
                 return 55 + Math.round(Math.random() * 200);
             }
             return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",0.8)";
         }
-
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+        function canvasClicked(e) {
+            let rect = e.target.getBoundingClientRect();
+            let mouseX = e.clientX - rect.x;
+            let mouseY = e.clientY - rect.y;
+            console.log(mouseX, mouseY);
 
-        const drawRandomRect = () => {
-            let x = getRandomInt(0, width);
-            let y = getRandomInt(0, height);
-            let w = getRandomInt(0, width / 2);
-            let h = getRandomInt(0, height / 2);
-            
+            for (let i = 0; i < 10; i++) {
+                let x = getRandomInt(-100, 100) + mouseX;
+                let y = getRandomInt(-100, 100) + mouseY;
+                let width = getRandomInt(20, 50);
+                let height = getRandomInt(20, 50);
+                let color = getRandomColor();
+                drawRect(ctx, x, y, width, height, color);
+            }
+        }
+
+        const drawRect = (ctx, x, y, w, h, fillStyle = "black", strokeStyle = "black") => {
             ctx.save();
             ctx.beginPath();
-            ctx.strokeStyle = getRandomColor();
-            ctx.fillStyle = getRandomColor();
+            ctx.strokeStyle = strokeStyle;
+            ctx.fillStyle = fillStyle;
             ctx.fillRect(x, y, w, h);
             ctx.strokeRect(x, y, w, h);
             ctx.closePath();
             ctx.restore();
         }
-
-        const drawRandomLine = () => {
+        const drawRandomRect = (ctx) => {
+            let x = getRandomInt(0, width);
+            let y = getRandomInt(0, height);
+            let w = getRandomInt(0, width / 2);
+            let h = getRandomInt(0, height / 2);
+            drawRect(ctx, x, y, w, h, getRandomColor(), getRandomColor());
+        }
+        const drawRandomLine = (ctx) => {
             let x = getRandomInt(0, width);
             let y = getRandomInt(0, height);
             let w = getRandomInt(0, width / 2);
@@ -59,25 +144,15 @@
             ctx.save();
             ctx.beginPath();
             ctx.strokeStyle = getRandomColor();
-            ctx.moveTo(x,y);
-            ctx.lineTo(x+width, y+height);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + width, y + height);
             ctx.stroke();
             ctx.closePath();
             ctx.restore();
         }
 
-        let lastTs = 0;
-        const frame = (ts) => {
-            const deltaT = ts - lastTs;
-            console.log(deltaT);
+        window.onload = init;
 
-            drawRandomRect();
-            drawRandomLine();
-            lastTs = ts;
-            requestAnimationFrame(frame);
-        }
-        frame();
-        
     </script>
 </body>
 
