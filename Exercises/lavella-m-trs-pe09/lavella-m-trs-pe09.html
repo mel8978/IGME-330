@@ -19,11 +19,14 @@
 		'use strict';
 		let ctx = document.querySelector('canvas').getContext('2d');
 		let rotation = 0;
+		let scale = 0;
 		loop();
 
 		function loop() {
 			requestAnimationFrame(loop);
-			rotation += Math.PI/100;
+			rotation += Math.PI / 100;
+			scale += 0.01;
+			console.log(scale % 1);
 			// background
 
 			ctx.fillStyle = 'yellow';
@@ -42,14 +45,17 @@
 			ctx.lineTo(-50, 50);
 			ctx.closePath();
 			ctx.stroke();
+			ctx.fill();
 			ctx.restore();
 
 
-			drawSquare2(ctx, 200,100,100,100,rotation, "purple", 0.75);
-			drawSquare2(ctx, 350,100,100,100,-rotation, "purple", 1);
-			drawSquare2(ctx, 500,100,100,100,rotation*1.1, "purple", 0.75);
+			drawSquare2(ctx, 200, 100, 100, 100, rotation, "purple", 0.75);
+			drawSquare2(ctx, 350, 100, 100, 100, -rotation, "purple", 1);
+			drawSquare2(ctx, 500, 100, 100, 100, rotation * 1.1, "purple", 0.75);
 
-			drawTriangle(ctx, 400,300, 450, 320, 425, 350, "blue", "green", "2", -rotation);
+			drawTriangle2(ctx, 400, 300, 50, "blue", "green", "2", rotation);
+
+			drawCircle(ctx, 100, 100, 50, "red", "white", "3", scale);
 
 			// do some transformations?
 			ctx.save();
@@ -83,7 +89,7 @@
 			drawSquare1(ctx, 400, 0, 100, 100, "orange");
 
 			// draw a triangle
-			drawTriangle(ctx,500,100,550,200,450,200, "red", "yellow", "5", rotation);
+			drawTriangle1(ctx, 500, 100, 550, 200, 450, 200, "red", "yellow", "5", rotation);
 
 			ctx.restore();
 		}
@@ -99,28 +105,56 @@
 		function drawSquare2(ctx, x, y, width, height, rotation, fillStyle, scale) {
 			ctx.save();
 			ctx.fillStyle = fillStyle;
-			ctx.translate(x,y);
+			ctx.translate(x, y);
 			ctx.rotate(rotation);
 			ctx.scale(scale, scale);
-			ctx.fillRect(0-width/2, 0-height/2, width, height);
+			ctx.fillRect(0 - width / 2, 0 - height / 2, width, height);
 			ctx.restore();
 		}
 
-		function drawTriangle(ctx,x1,y1,x2,y2,x3,y3,strokeStyle,fillStyle,lineWidth, rotation) {
+		function drawTriangle1(ctx, x1, y1, x2, y2, x3, y3, strokeStyle, fillStyle, lineWidth, rotation) {
 			ctx.save();
-			ctx.translate(x1,y1);
+			// ctx.translate(x1,y1);
 			ctx.rotate(rotation);
-			ctx.restore();
 
-			ctx.save();
 			ctx.strokeStyle = strokeStyle;
 			ctx.fillStyle = fillStyle;
 			ctx.lineWidth = lineWidth;
 			ctx.beginPath();
 			ctx.moveTo(x1, y1);
-			ctx.lineTo(x2,y2);
+			ctx.lineTo(x2, y2);
 			ctx.lineTo(x3, y3);
 			ctx.closePath();
+			ctx.stroke();
+			ctx.fill();
+			ctx.restore();
+		}
+
+		function drawTriangle2(ctx, x, y, width, strokeStyle, fill, lineWidth, rotation) {
+			ctx.save();
+			ctx.translate(x, y);
+			ctx.rotate(rotation);
+			ctx.scale(1.2, 1.2);
+			ctx.strokeStyle = strokeStyle;
+			ctx.fillStyle = fill;
+			ctx.lineWidth = lineWidth;
+			ctx.beginPath();
+			ctx.moveTo(0, -width);
+			ctx.lineTo(width, width);
+			ctx.lineTo(-width, width);
+			ctx.closePath();
+			ctx.stroke();
+			ctx.fill();
+			ctx.restore();
+		}
+
+		function drawCircle(ctx, x, y, radius, strokeStyle, fillStyle, lineWidth, scale) {
+			ctx.save();
+			ctx.strokeStyle = strokeStyle;
+			ctx.fillStyle = fillStyle;
+			ctx.lineWidth = lineWidth;
+			ctx.scale(1 + scale % 1, 1 + scale % 1);
+			ctx.arc(x, y, radius, 0, Math.PI * 2, true);
 			ctx.stroke();
 			ctx.fill();
 			ctx.restore();
